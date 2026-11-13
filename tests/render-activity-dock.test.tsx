@@ -210,6 +210,13 @@ describe("activity dock pure layer", () => {
 		assert.equal(formatTokens(1_234_567), "1.2M");
 		assert.equal(formatTokens(950), "950");
 	});
+
+	it("formatTokens carries values that round to 1000k over to 1M", () => {
+		assert.equal(formatTokens(999_949), "999.9k");
+		assert.equal(formatTokens(999_950), "1M");
+		assert.equal(formatTokens(999_999), "1M");
+		assert.equal(formatTokens(1_000_000), "1M");
+	});
 });
 
 describe("activity section render", () => {

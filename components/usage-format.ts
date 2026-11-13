@@ -13,10 +13,12 @@ export function planCostLabel(dollars: number | null, subscription: boolean | st
 	return [...(dollars === null ? [] : [format(dollars)]), ...labels].join(" + ") || "—";
 }
 
-/** 38000 → "38k", 1234567 → "1.2M" — trimmed, never "38.0k". */
+/** 38000 → "38k", 1234567 → "1.2M" — trimmed, never "38.0k".
+ *  Values that round up to 1000k (999950–999999) carry over to "1M". */
 export function formatTokens(n: number): string {
-	if (n >= 1e6) return `${+(n / 1e6).toFixed(1)}M`;
-	if (n >= 1e3) return `${+(n / 1e3).toFixed(1)}k`;
+	const k = +(n / 1e3).toFixed(1);
+	if (k >= 1e3) return `${+(n / 1e6).toFixed(1)}M`;
+	if (n >= 1e3) return `${k}k`;
 	return String(n);
 }
 
